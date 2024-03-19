@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,18 +41,39 @@ class _SignInState extends State<SignIn> {
     return null;
   }
 
+  Future<bool> isEmployee(String uid) async {
+    try {
+      DocumentSnapshot<Map<String, dynamic>> userSnapshot =
+      await FirebaseFirestore.instance.collection('userRole').doc(uid).get();
+
+      if (userSnapshot.exists) {
+        String? role = userSnapshot.data()?['user'];
+        return role == 'employee';
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print('Error checking admin status: $e');
+      return false;
+    }
+  }
+
   void _signIn() async {
     try {
       final userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: emailController.text, password: passController.text);
       print('sign in successfully');
-      if (userCredential.user != null) {
+      if (await isEmployee(userCredential.user!.uid)) {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => EmployeeHomeScreen(),
+              builder: (context) => const EmployeeHomeScreen(),
             ));
+      }else{
+        FirebaseAuth.instance.signOut();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('id password is incorrect')));
       }
     } catch (e) {
       print(e.toString());

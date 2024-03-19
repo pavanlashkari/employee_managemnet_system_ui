@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:maan_hrm/GlobalComponents/button_global.dart';
@@ -75,6 +76,10 @@ class _AddEmployeeState extends State<AddEmployee> {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
               email: emailIDController.text, password: randomPasswordId);
+      await FirebaseFirestore.instance
+          .collection('userRole')
+          .doc(userCredential.user!.uid)
+          .set({'user': 'employee'});
       db.addEmployeeData(
           EmployeeModel(
             email: emailIDController.text,

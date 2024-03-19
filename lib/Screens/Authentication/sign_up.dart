@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:maan_hrm/GlobalComponents/button_global.dart';
 import 'package:maan_hrm/Screens/Authentication/admin_sign_in.dart';
 import 'package:maan_hrm/Screens/Authentication/sign_in.dart';
-import 'package:maan_hrm/Screens/Home/home_screen.dart';
 import 'package:maan_hrm/models/admin_model.dart';
 import 'package:maan_hrm/services/database_services.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -32,6 +32,10 @@ class _SignUpState extends State<SignUp> {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: emailController.text, password: passController.text);
+      await FirebaseFirestore.instance
+          .collection('userRole')
+          .doc(userCredential.user!.uid)
+          .set({'user': 'admin'});
       await db.addAdminData(
           AdminModel(
               companyName: companyController.text,
@@ -207,8 +211,6 @@ class _SignUpState extends State<SignUp> {
                           kButtonDecoration.copyWith(color: kMainColor),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // Validation passed, continue with sign-up logic
-                          // For now, navigate to HomeScreen as an example
                           _signUpAdmin();
                         }
                       },

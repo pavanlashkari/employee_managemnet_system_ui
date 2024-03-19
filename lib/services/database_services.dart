@@ -10,6 +10,8 @@ class DatabaseService {
 
   addEmployeeData(EmployeeModel employeeModel, String uid) async {
     await _db.collection("employee").doc(uid).set(employeeModel.toMap());
+    await _db.collection('userRole').doc(uid).set({'user' :'employee'});
+
   }
 
   Future<List<EmployeeModel>> retrieveAllEmployeesData() async {
@@ -95,6 +97,7 @@ class DatabaseService {
 
   addAdminData(AdminModel adminModel, String uid) async {
     await _db.collection('adminDetail').doc(uid).set(adminModel.toMap());
+    await _db.collection('userRole').doc(uid).set({'user' :'admin'});
   }
 
   addLeaveRequest(LeaveModel leaveModel) async {
