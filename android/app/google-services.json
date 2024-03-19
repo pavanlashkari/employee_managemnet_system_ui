@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "176254428237",
+    "project_id": "companyproject-aa9fb",
+    "storage_bucket": "companyproject-aa9fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176254428237:android:6cb96bd3e213e414386804",
+        "android_client_info": {
+          "package_name": "com.maantheme.maan_hrm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCSE3BOP3OInkAGLOhiOaLbiRI2ejAMyA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
